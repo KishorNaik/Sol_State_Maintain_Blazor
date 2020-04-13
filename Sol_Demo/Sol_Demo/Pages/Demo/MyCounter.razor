@@ -1,0 +1,35 @@
+﻿@page "/demo/mycounter"
+@using Sol_Demo.State
+@inject ICounterState counterState
+
+<h3>MyCounter</h3>
+
+<h1>Counter : @IncrementCount</h1>
+
+<button @onclick="Increment">Counter</button>
+
+
+@code {
+    private int IncrementCount { get; set; }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            counterState.onCountChanged += () =>
+            {
+                StateHasChanged();
+            };
+
+            IncrementCount = counterState.IncrementCount;
+            StateHasChanged();
+        }
+    }
+
+    private void Increment()
+    {
+        counterState?.IncrementCouter();
+        IncrementCount = counterState.IncrementCount;
+    }
+
+}
